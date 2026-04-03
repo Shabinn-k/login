@@ -10,17 +10,17 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() {
-		dsn:="host=localhost port=2007 user=postgres password=shabin dbname=Userdb sslmode=disable"
+	dsn := "host=localhost port=2007 user=postgres password=shabin dbname=Userdb sslmode=disable"
 
-		var err error
-		DB,err:=gorm.Open(postgres.Open(dsn),&gorm.Config{})
-		if err!=nil{
-			log.Fatal("DB Connection failed",err)
-		}
-		log.Println("DB Connected")
+	var err error
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("DB Connection failed", err)
+	}
+	log.Println("DB Connected")
 
-		err=DB.AutoMigrate(&models.User{})
-		if err!=nil{
-			log.Fatal("Automigration Failed",err)
-		}
+	err = DB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal("Automigration Failed", err)
+	}
 }
