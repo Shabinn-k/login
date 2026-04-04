@@ -1,6 +1,6 @@
 package middleware
 
-import (
+import ( 
 	"golang/utils"
 	"strings"
 
@@ -16,23 +16,15 @@ func MiddleWare() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		
 		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			c.JSON(401, gin.H{"error": "invalid token format"})
+		if len(parts) != 2 {
+			c.JSON(401, gin.H{"error": "Invalid token format"})
 			c.Abort()
 			return
 		}
-		
-		tokenString := parts[1]
-		token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
-			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, jwt.ErrSignatureInvalid
-			}
-			return utils.ACCESS_SECRET, nil
-		})
-		if err != nil || !token.Valid {
-			c.JSON(401, gin.H{"error": "invalid token"})
+		token, err := utils.VerifyAccessToken(parts[1])
+		if err != nil {
+			c.JSON(401, gin.H{"error": err.Error()})
 			c.Abort()
 			return
 		}
