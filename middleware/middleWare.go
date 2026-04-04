@@ -17,7 +17,7 @@ func MiddleWare() gin.HandlerFunc {
 			return
 		}
 		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 {
+		if len(parts) != 2 ||parts[0]!="Bearer"{
 			c.JSON(401, gin.H{"error": "Invalid token format"})
 			c.Abort()
 			return
