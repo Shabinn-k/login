@@ -1,6 +1,6 @@
 package middleware
 
-import ( 
+import (
 	"golang/utils"
 	"strings"
 
@@ -29,8 +29,20 @@ func MiddleWare() gin.HandlerFunc {
 			return
 		}
 		claims := token.Claims.(jwt.MapClaims)
-		c.Set("user_id", claims["user_id"])
-		c.Set("role", claims["role"])
+		c.Set("user_id",uint (claims["user_id"].(float64)))
+		c.Set("role", claims["role"].(string))
 		c.Next()
+	}
+}
+ 
+
+func middleware()gin.HandlerFunc{
+	return func(c *gin.Context){
+		authHeader:=c.GetHeader("Authorization")
+		if authHeader==""{
+			c.JSON(401,gin.H{"error":"missing token"})
+			c.Abort()
+			return
+		}
 	}
 }
