@@ -4,7 +4,6 @@ import (
 	"golang/database"
 	"golang/models"
 	"golang/utils"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,7 +41,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	if err := utils.ComparePassword(user.Password, input.Password); err != nil {
-		c.JSON(401, gin.H{"error": "wrong password"})
+		c.JSON(401,gin.H{"error": "wrong password"}  )
 		return
 	}
 	access, err := utils.GenerateAccessToken(user.ID, user.Role)
